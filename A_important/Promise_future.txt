@@ -1,0 +1,30 @@
+Analogy: Sending a Package
+The promise is like a sender preparing a package.
+
+In the main thread, a std::promise is created. The main thread (sender) will later put a value (package) into it.
+The future is like a recipient waiting for the package.
+
+In the worker thread, a std::future is used to wait for the package. The worker thread knows a package is coming, but it doesn’t know when it will arrive.
+The main thread calculates or prepares the package.
+
+The main thread spends some time (5 seconds here) to calculate the value it wants to send.
+The worker thread works on other tasks but keeps an eye on the mailbox.
+
+The worker thread does some initial work (prints dots) and waits for the package (value from the future).
+The sender puts the package in the mailbox.
+
+The main thread sets the value using promise.set_value(1.23).
+The recipient gets notified and continues working with the package.
+
+The worker thread retrieves the value using future.get() and continues its work using that value.
+Both threads complete their tasks and finish.
+
+The worker thread finishes its work, and the main thread waits (join()) for it to complete before ending.
+Example
+Imagine you're baking a cake (main thread), and your friend (worker thread) is decorating a party room.
+
+You promise your friend that you'll bake the cake (std::promise).
+Your friend decorates the room but occasionally checks to see if the cake is ready (std::future.get()).
+Once you finish baking, you deliver the cake to your friend (set_value).
+Your friend stops waiting, grabs the cake, and completes the party preparations.
+The key idea: promise sends a value, and future waits to receive it, allowing threads to work asynchronously.

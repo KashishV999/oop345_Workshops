@@ -1,0 +1,52 @@
+#include <iostream>
+#include<string>
+using namespace std;
+
+
+void trim(string& str){
+    //leading spaces
+    size_t i=0u;
+    for( i=0u; i<str.length()&& str[i]==' ';++i);
+        str=str.substr(i);
+        
+    
+    
+    //ending spaces
+    for( i=str.length(); i>0 && str[i-1]==' ';--i);
+        str=str.substr(0,i);
+    
+}
+
+
+
+
+int main() {
+  string name="this is ,mouse  ,    desk  ,how";
+  
+  size_t posS=0;
+  size_t posE=name.find(',');
+  string parse1=name.substr(posS, posE-posS);
+  
+  //posE-posS
+  
+  posS=posE+1;
+  posE=name.find(',', posS);
+  string parse2=name.substr(posS, posE-posS);
+  
+  posS=posE+1;
+  posE=name.find(',', posS);
+  string parse3= name.substr(posS,posE-posS);
+  trim(parse3);
+  
+  posS=posE+1;
+  posE=name.find(',', posS);
+  string parse4=name.substr(posS, posE-posS);
+  
+  cout<<parse1<<"\n";
+     cout<<parse2<<"\n";
+    cout<<parse3<<"\n";
+     cout<<parse4<<"\n";
+  
+
+    return 0;
+}

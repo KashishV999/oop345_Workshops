@@ -1,0 +1,35 @@
+
+m_content is a  vector of pointer
+
+//delete first, then pop_back().
+Directory::~Directory()
+{
+    while (!m_contents.empty())
+    {
+        delete m_contents.back(); // Delete the object
+        m_contents.pop_back();    // Remove the pointer from the vector
+    }
+}
+
+
+//erase() first, then delete.
+void Directory::remove(const std::string& rname, const std::vector<OpFlags>& flags)
+{
+    // Finding the resource in m_contents...
+    it--; // Adjust iterator to point to the correct element
+    m_contents.erase(it); // Remove the pointer from the vector
+    delete resource;      // Delete the object
+}
+
+
+
+In the destructor:
+You are processing the vector from back to front until it's empty. 
+You don’t need to preserve the vector's order or adjust iterators, 
+so it's safe to delete first and pop_back after.
+
+
+In the remove function:
+The erase operation adjusts the vector's layout, so you first remove the pointer from the vector, 
+then delete the object using the saved pointer.
+This approach avoids invalidating iterators or corrupting the vector.

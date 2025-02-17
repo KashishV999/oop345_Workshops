@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+int main() {
+   const char* name="kashish";
+   string name1=name;
+   cout<<name1<<endl;;
+   
+   string name3="hello";
+   const char* name4= name3.c_str();
+   cout<<name4;
+
+    return 0;
+}

@@ -1,0 +1,166 @@
+QUESTION: 01
+//UPCASTING   -->work both with stsic and dynamic
+#include<iostream>
+using namespace std;
+class Animal {
+public:
+    virtual void sound() { cout << "Some animal sound" << endl; }
+};
+
+class Dog : public Animal {
+public:
+    void sound() override { cout << "Bark" << endl; }
+};
+
+int main(){
+    Dog* mydog=new Dog(); //derived
+    mydog->sound(); //Bark
+    //derived to base //upcasting --> static or dynamic
+    //but as polymorphism is enable better to use dynamic cast
+	//but its said prefer static_cast when upcasting
+    Animal* a= dynamic_cast<Animal*>(mydog);
+    a->sound(); //bark as  it is virtual but if it is not vurtual it //will give me Some animal sound
+    
+}
+
+
+//QUESTION --2 DOWNCASTING (CASTING FAILED AS BASE IS INTO POINTING TO DERIVED)
+
+#include <iostream>
+using namespace std;
+class Shape {
+public:
+    virtual void draw() { cout << "Drawing shape" << endl; }
+};
+
+class Circle : public Shape {
+public:
+    void draw() override { cout << "Drawing circle" << endl; }
+    void radius() { cout << "Circle radius function" << endl; }
+};
+
+int main(){
+    Shape* s= new Shape(); //you wanna downcast it to Circle
+    Circle* c= dynamic_cast<Circle*>(s);
+    if(c){
+        c->draw();
+        c->radius();
+    }
+    else{
+        cout<<"Casting failed"<<endl;
+    }
+}
+
+
+
+//QUESTION --2 DOWNCASTING  --> CASTING SUCCESFUL
+
+#include <iostream>
+using namespace std;
+class Shape {
+public:
+    virtual void draw() { cout << "Drawing shape" << endl; }
+};
+
+class Circle : public Shape {
+public:
+    void draw() override { cout << "Drawing circle" << endl; }
+    void radius() { cout << "Circle radius function" << endl; }
+};
+
+int main(){
+    Circle* c1= new Circle();
+    Shape* s= c1; //pointing to circle you wanna downcast it to Circle
+    Circle* c= dynamic_cast<Circle*>(s);
+    if(c){
+        c->draw();
+        c->radius();
+    }
+    else{
+        cout<<"Casting failed"<<endl;
+    }
+}
+
+
+///Beautifl example:
+//Polymorphism allows you to treat all objects as GameObject*, but 
+//when you need to call methods specific to a derived class (like shoot() in Player), 
+//you need to use downcasting.
+#include <iostream>
+using namespace std;
+
+class GameObject {
+public:
+    virtual void update() { 
+        cout << "Updating game object" << endl; 
+    }
+    virtual ~GameObject() {}
+};
+
+class Player : public GameObject {
+public:
+    void update() override {
+        cout << "Updating player" << endl;
+    }
+
+    void shoot() {
+        cout << "Player shooting!" << endl;
+    }
+};
+
+class Enemy : public GameObject {
+public:
+    void update() override {
+        cout << "Updating enemy" << endl;
+    }
+
+    void attack() {
+        cout << "Enemy attacking!" << endl;
+    }
+};
+
+class Item : public GameObject {
+public:
+    void update() override {
+        cout << "Updating item" << endl;
+    }
+
+    void pickUp() {
+        cout << "Item picked up!" << endl;
+    }
+};
+
+int main() {
+    // Create an array of GameObject pointers
+    GameObject* gameObjects[3];
+
+    // Assigning different derived class objects to the array
+    gameObjects[0] = new Player();
+    gameObjects[1] = new Enemy();
+    gameObjects[2] = new Item();
+
+    // Iterate through the array and call their specialized methods
+    for (int i = 0; i < 3; ++i) {
+        gameObjects[i]->update();  // Call update for all game objects
+
+        // Downcasting to call the specific methods
+        if (Player* p = dynamic_cast<Player*>(gameObjects[i])) {
+            p->shoot();  // Call shoot if the object is a Player
+        }
+        else if (Enemy* e = dynamic_cast<Enemy*>(gameObjects[i])) {
+            e->attack();  // Call attack if the object is an Enemy
+        }
+        else if (Item* itm = dynamic_cast<Item*>(gameObjects[i])) {
+            itm->pickUp();  // Call pickUp if the object is an Item
+        }
+    }
+
+    // Clean up memory
+    for (int i = 0; i < 3; ++i) {
+        delete gameObjects[i];
+    }
+
+    return 0;
+}
+
+ 
